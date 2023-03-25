@@ -58,6 +58,7 @@ from bs4 import BeautifulSoup
 from textrank_utils import top_sentence
 from score_utils import score, score_2, score_3
 
+SERPER_KEY=open("serper_key").readline()
 
 class prey(object):
     def __init__(self, value, sentence):
@@ -329,7 +330,7 @@ def summ_web(q, url, ft_en, ft_zh, is_eng, nlp_en, nlp_zh, measure_en, measure_z
         "note":"poor summ , use snippet", "type":"snippet"} 
 
 def google_search_api(q):
-    service = build("customsearch", "v1", developerKey="AIzaSyDoZaTDH3GnG_WQ3UO2MGeRSaw0zsq0j84")
+    service = build("customsearch", "v1", developerKey="<key>")
 
     t1 = time.time()
     
@@ -366,7 +367,7 @@ def search_api(q):
     else:
         payload = json.dumps({"q": q})#,"gl": "cn","hl": "zh-cn"})
     headers = {
-        'X-API-KEY': 'b08bef7cb98fbe5f48428d20dbd8d23a0de74f53',
+        'X-API-KEY': SERPER_KEY,
         'Content-Type': 'application/json'
     }
 
