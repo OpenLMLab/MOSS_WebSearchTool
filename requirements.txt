@@ -1,0 +1,11 @@
+beautifulsoup4==4.12.0
+fasttext==0.9.2
+google_api_python_client==2.82.0
+mosec==0.6.3
+ngram==4.0.3
+nltk==3.8.1
+numpy==1.19.0
+pytextrank==3.2.4
+requests==2.28.2
+spacy==3.5.0
+torch==1.13.1
