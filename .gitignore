@@ -8,3 +8,4 @@ __pycache__/
 ./fastText
 
 all_test.sh
+export_vpn.sh
