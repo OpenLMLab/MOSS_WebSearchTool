@@ -60,12 +60,15 @@ class Inference(Worker):
         
         self.topk = 5
 
+        self.SERPER_KEY=open("serper_key").readline()
+
+
     def forward(self, data):
         json_data = data#request.json
         
         query = str(json_data["query"])
         start_time = time.time()
-        response = engine(query, 
+        response = engine(query, SERPER_KEY=self.SERPER_KEY,
                           ft_en=self.ft_en, 
                           ft_zh=self.ft_zh, 
                           nlp_en=self.nlp_en, 
@@ -85,7 +88,7 @@ class Inference(Worker):
 
 
 if __name__ == "__main__":
-    NUM_DEVICE = 12
+    NUM_DEVICE = 32
     server = Server()
     server.append_worker(Preprocess, num=NUM_DEVICE)
     server.append_worker(Inference, 

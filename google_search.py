@@ -58,7 +58,6 @@ from bs4 import BeautifulSoup
 from textrank_utils import top_sentence
 from score_utils import score, score_2, score_3
 
-SERPER_KEY=open("serper_key").readline()
 
 class prey(object):
     def __init__(self, value, sentence):
@@ -132,6 +131,7 @@ def select(new):
     return oral
 
 def get_web_response(url):
+    print("[ENGINE] get web response")
     try:
         response = requests.get(url=url, timeout=5)
         response.encoding = 'utf-8'
@@ -357,7 +357,7 @@ def google_search_api(q):
     return urls
 """
     
-def search_api(q):
+def search_api(q, SERPER_KEY):
     import requests
     import json
     url = "https://google.serper.dev/search"
@@ -444,11 +444,11 @@ def filter_urls(urls, snippets, black_list=None, topk=3):
 
     return filtered_urls, filtered_snippets
 
-def engine(q, ft_en, ft_zh, nlp_en, nlp_zh, measure_en, measure_zh, topk=3):
+def engine(q, SERPER_KEY,ft_en, ft_zh, nlp_en, nlp_zh, measure_en, measure_zh, topk=3):
     start_time = time.time()
     is_eng = containenglish(q)
 
-    response = search_api(q)
+    response = search_api(q, SERPER_KEY)
 
     if "answerBox" in response.keys():
         url = response["answerBox"].get("link", response["organic"][0]["link"])
@@ -495,6 +495,6 @@ if __name__ == "__main__":
     #engine("quick sort", measure_en, measure_zh)#yes
     #engine("document image rectification", ft_en, ft_zh, measure_en, measure_zh)#yes
     #engine("忽如一夜春风来，千树万树梨花开 季节", ft_en, ft_zh, measure_en, measure_zh)#no
-    print(engine("奔驰c 比亚迪model y 比较", ft_en, ft_zh, nlp_en, nlp_zh, measure_en, measure_zh))#yes
+    print(engine("奔驰c 比亚迪model y 比较", open("serper_key").readline(), ft_en, ft_zh, nlp_en, nlp_zh, measure_en, measure_zh))#yes
     print(time.time() - start_time)
 

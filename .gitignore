@@ -6,3 +6,5 @@
 *.gz
 __pycache__/
 ./fastText
+
+all_test.sh
