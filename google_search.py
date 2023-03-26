@@ -81,26 +81,6 @@ def containenglish(str0):
     import re
     return bool(re.search('[a-z]', str0))
 
-"""
-def clean_html(html):
-    import unicodedata as ucd
-
-    # First we remove inline JavaScript/CSS:
-    cleaned = re.sub(r"(?is)<(script|style).*?>.*?(</\1>)", "", html.strip())
-    # Then we remove html comments. This has to be done before removing regular
-    # tags since comments can contain '>' characters.
-    cleaned = re.sub(r"(?s)<!--(.*?)-->[\n]?", "", cleaned)
-    # Next we can remove the remaining tags:
-    cleaned = re.sub(r"(?s)<.*?>", "", cleaned)
-    # Finally, we deal with whitespace
-    cleaned = re.sub(r"&nbsp;", "", cleaned)
-    cleaned = re.sub(r"  ", " ", cleaned)
-    cleaned = re.sub(r"\t", "", cleaned)
-    cleaned = re.sub(r"&.*?;[0-9]*&.*?;", "", cleaned)
-    cleaned = re.sub(r"&.*?;", "", cleaned)
-    #cleaned = ucd.normalize('NFKC', cleaned).replace(' ', '') 
-    return cleaned.strip() 
-"""
 
 def clean_html(html: str) -> str:
     """Remove HTML markup from the given string."""

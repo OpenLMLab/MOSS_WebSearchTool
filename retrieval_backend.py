@@ -1,6 +1,7 @@
 import time
-import fasttext
+import re
 
+import fasttext
 from google_search import engine
 
 import logging
@@ -60,7 +61,7 @@ class Inference(Worker):
         
         self.topk = 5
 
-        self.SERPER_KEY=open("serper_key").readline()
+        self.SERPER_KEY=re.sub("\n", "", open("serper_key").readline())
 
 
     def forward(self, data):
@@ -88,7 +89,7 @@ class Inference(Worker):
 
 
 if __name__ == "__main__":
-    NUM_DEVICE = 32
+    NUM_DEVICE = 12
     server = Server()
     server.append_worker(Preprocess, num=NUM_DEVICE)
     server.append_worker(Inference, 
