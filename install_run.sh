@@ -1,14 +1,14 @@
-curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
 
-docker login
-
-git clone https://github.com/piglaker/MOSS_Retrieval.git
-
+#git clone https://github.com/piglaker/MOSS_Retrieval.git
 echo -n "Enter your key:"
 
 read key
 
 echo ${key} > serper_key
+
+curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+
+docker login
 
 docker pull piglake/retrieval:0.7
 
