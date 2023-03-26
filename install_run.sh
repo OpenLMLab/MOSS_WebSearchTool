@@ -18,6 +18,8 @@ if [[ $(which docker) && $(docker --version) ]]; then
     echo "安装docker环境...安装完成!"
 fi
 
+systemctl start docker
+
 docker login
 docker pull piglake/retrieval:0.7
 
