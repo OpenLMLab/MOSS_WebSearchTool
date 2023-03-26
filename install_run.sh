@@ -6,10 +6,16 @@ read key
 
 echo ${key} > serper_key
 
-curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+docker -v
+if [ $? - eq 0 ] ; then
+    echo "检查到Docker已安装!"
+else
+    echo "安装docker环境..."
+    curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+    echo "安装docker环境...安装完成!"
+fi
 
 docker login
-
 docker pull piglake/retrieval:0.7
 
 yum install git
