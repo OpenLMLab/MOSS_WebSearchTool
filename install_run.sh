@@ -11,7 +11,7 @@ else
 fi
 
 docker -v
-if [ $? - eq 0 ] ; then
+if [ $? - eq 0 ]; then
     echo "检查到Docker已安装!"
 else
     echo "安装docker环境..."
