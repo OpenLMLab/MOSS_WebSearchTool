@@ -9,3 +9,5 @@ __pycache__/
 
 all_test.sh
 export_vpn.sh
+.gitignore
+playground.ipynb
