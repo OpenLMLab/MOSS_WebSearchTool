@@ -10,10 +10,9 @@ else
     echo ${key} > serper_key
 fi
 
-docker -v
-if [ $? - eq 0 ]; then
+if [[ $(which docker) && $(docker --version) ]]; then
     echo "检查到Docker已安装!"
-else
+  else
     echo "安装docker环境..."
     curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
     echo "安装docker环境...安装完成!"
