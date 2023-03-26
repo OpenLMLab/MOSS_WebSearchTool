@@ -1,10 +1,14 @@
 
 #git clone https://github.com/piglaker/MOSS_Retrieval.git
-echo -n "Enter your key:"
 
-read key
-
-echo ${key} > serper_key
+FILE=serper_key
+if [ -f "$FILE" ]; then
+    echo "$FILE exist"
+else
+    echo -n "Enter your key:"
+    read key
+    echo ${key} > serper_key
+fi
 
 docker -v
 if [ $? - eq 0 ] ; then
