@@ -128,7 +128,7 @@ def extract_description(soup):
             return content
     return None
 
-def summ_web(q, url, ft_en, ft_zh, is_eng, nlp_en, nlp_zh, measure_en, measure_zh, snippet):
+def summ_web(q, url, ft_en, ft_zh, is_eng, nlp_en, nlp_zh, measure_en, measure_zh, snippet,title):
     print(q)
     print(url)
     #start_time = time.time()
@@ -136,14 +136,14 @@ def summ_web(q, url, ft_en, ft_zh, is_eng, nlp_en, nlp_zh, measure_en, measure_z
     
     response = get_web_response(url)
     if response is None:
-        return {"url": url, "summ": snippet, "note": "fail to get ... use snippet", "type": "snippet"}
+        return {"title":title, "url": url, "summ": snippet, "note": "fail to get ... use snippet", "type": "snippet"}
 
     soup = BeautifulSoup(response.text, "html.parser")
     description = extract_description(soup)
 
     if description:
         if all(key_word in description for key_word in q.split()):
-            return {"url": url, "summ": description, "note": "use description as summ", "type": "description"}
+            return {"title":title, "url": url, "summ": description, "note": "use description as summ", "type": "description"}
 
     text = clean_html(response.text)
     sentences = re.split("\n|。|\.", text)
@@ -171,18 +171,18 @@ def summ_web(q, url, ft_en, ft_zh, is_eng, nlp_en, nlp_zh, measure_en, measure_z
     combined_text = stop_word.join([sentence['sentence'] for sentence in top_sentences])
 
     if len(combined_text) < 3:
-        return {"url": url, "summ": snippet, "note": "bad web, fail to summ, use snippet,", "type": "snippet"}
+        return {"title":title, "url": url, "summ": snippet, "note": "bad web, fail to summ, use snippet,", "type": "snippet"}
 
     try:
         summary = top_sentence(text=combined_text, limit=3, nlp=nlp)
         summary = "".join(summary)
     except Exception as e:
-        return {"url": url, "summ": snippet, "note": "unknown summ error , use snippet", "type": "snippet"}
+        return {"title":title, "url": url, "summ": snippet, "note": "unknown summ error , use snippet", "type": "snippet"}
 
     if any(key_word in summary for key_word in q.split()):
-        return {"url": url, "summ": summary, "note": "good summ and use it", "type": "my_summ"}
+        return {"title":title, "url": url, "summ": summary, "note": "good summ and use it", "type": "my_summ"}
 
-    return {"url": url, "summ": snippet, "note": "poor summ , use snippet", "type": "snippet"}
+    return {"title":title, "url": url, "summ": snippet, "note": "poor summ , use snippet", "type": "snippet"}
 
 """
 def summ_web(q, url, ft_en, ft_zh, is_eng, nlp_en, nlp_zh, measure_en, measure_zh, snippet ):
@@ -408,21 +408,22 @@ def engine(q, ft_en, ft_zh, nlp_en, nlp_zh, measure_en, measure_zh,topk=3):
     return res
 """
 
-def filter_urls(urls, snippets, black_list=None, topk=3):
+def filter_urls(urls, snippets, titles, black_list=None, topk=3):
     if black_list is None:
         black_list = ["enoN, youtube.com, bilibili.com", "zhihu.com"]
 
-    filtered_urls, filtered_snippets = [], []
+    filtered_urls, filtered_snippets, filtered_titles = [], [], []
     count = 0
-    for url, snippet in zip(urls, snippets):
+    for url, snippet, title in zip(urls, snippets, titles):
         if all(domain not in url for domain in black_list) and url.split(".")[-1] != "pdf":
             filtered_urls.append(url)
             filtered_snippets.append(snippet)
+            filtered_titles.append(title)
             count += 1
             if count >= topk:
                 break
 
-    return filtered_urls, filtered_snippets
+    return filtered_urls, filtered_snippets, filtered_titles
 
 def engine(q, SERPER_KEY,ft_en, ft_zh, nlp_en, nlp_zh, measure_en, measure_zh, topk=3):
     start_time = time.time()
@@ -439,15 +440,15 @@ def engine(q, SERPER_KEY,ft_en, ft_zh, nlp_en, nlp_zh, measure_en, measure_zh, t
 
     raw_urls = [i["link"] for i in response["organic"]]
     raw_snippets = [i["snippet"] for i in response["organic"]]
-
-    urls, snippets = filter_urls(raw_urls, raw_snippets, topk=topk)
+    raw_titles = [i["titles"] for i in response["organic"]]
+    urls, snippets, titles = filter_urls(raw_urls, raw_snippets, raw_titles, topk=topk)
 
     results = {}
     for i, url in enumerate(urls):
         try:
-            summ = summ_web(q, url, ft_en, ft_zh, is_eng, nlp_en, nlp_zh, measure_en, measure_zh, snippets[i])
+            summ = summ_web(q, url, ft_en, ft_zh, is_eng, nlp_en, nlp_zh, measure_en, measure_zh, snippets[i], titles[i])
         except:
-            summ = {"url": url, "summ": snippets[i], "note": "unbelievable error, use snippet !", "type": "snippet"}
+            summ = {"url": url, "summ": snippets[i], "note": "unbelievable error, use snippet !", "type": "snippet", "title":titles[i]}
 
         results[str(i)] = summ
 
