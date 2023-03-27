@@ -54,4 +54,5 @@ else
 fi
 
 
+
 bash docker_run_retrieval.sh

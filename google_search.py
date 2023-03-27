@@ -440,7 +440,7 @@ def engine(q, SERPER_KEY,ft_en, ft_zh, nlp_en, nlp_zh, measure_en, measure_zh, t
 
     raw_urls = [i["link"] for i in response["organic"]]
     raw_snippets = [i["snippet"] for i in response["organic"]]
-    raw_titles = [i["titles"] for i in response["organic"]]
+    raw_titles = [i["title"] for i in response["organic"]]
     urls, snippets, titles = filter_urls(raw_urls, raw_snippets, raw_titles, topk=topk)
 
     results = {}
