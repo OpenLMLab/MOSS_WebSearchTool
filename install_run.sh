@@ -38,7 +38,20 @@ else
     wget https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.zh.300.bin.gz
 fi
 
-gunzip cc.en.300.bin.gz
-gunzip cc.zh.300.bin.gz
+EN_Bin=cc.en.300.bin
+ZH_Bin=cc.zh.300.bin
+
+if [ -f "$EN_Bin" ]; then
+    echo "$EN_Bin exist"
+else
+    gunzip cc.en.300.bin.gz
+fi
+
+if [ -f "$ZH_Bin" ]; then
+    echo "$ZH_Bin exist"
+else
+    gunzip cc.zh.300.bin.gz
+fi
+
 
 bash docker_run_retrieval.sh
