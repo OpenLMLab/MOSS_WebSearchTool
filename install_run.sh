@@ -23,12 +23,20 @@ systemctl start docker
 docker login
 docker pull piglake/retrieval:0.7
 
-yum install git
+CC_EN=cc.en.300.bin.gz
+CC_ZH=cc.zh.300.bin.gz
 
-cd MOSS_Retrieval
+if [ -f "$CC_EN" ]; then
+    echo "$CC_EN exist"
+else
+    wget https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.en.300.bin.gz
+fi
 
-wget https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.en.300.bin.gz
-wget https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.zh.300.bin.gz
+if [ -f "$CC_ZH" ]; then
+    echo "$CC_ZH exist"
+else
+    wget https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.zh.300.bin.gz
+fi
 
 gunzip cc.en.300.bin.gz
 gunzip cc.zh.300.bin.gz
