@@ -1,8 +1,7 @@
-echo "try to stop retrieval ..."
-
-docker stop retrieval_0.4
-
-echo " docker run ... "
-
-bash docker_run_retrieval.sh
+echo "try to stop retrieval container "
+docker stop retrieval
+echo "wait while docker daemon clean "
+sleep 1
+echo "running container"
+bash docker_run.sh
 
