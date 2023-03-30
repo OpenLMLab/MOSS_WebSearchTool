@@ -5,4 +5,4 @@ version="7"
 docker run -P --rm --name="retrieval" --shm-size=200g \
 -w /retrieval -p7004:7004  \
 -v `pwd`:/retrieval piglake/retrieval:0.${version} \
-python3 retrieval_backend.py --port 7004 --timeout 300000
+python3 retrieval_backend.py --port 7004 --timeout 60000
