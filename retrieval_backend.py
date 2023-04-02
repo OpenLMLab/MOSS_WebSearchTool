@@ -59,15 +59,18 @@ class Inference(Worker):
         self.measure_zh = None#score_measure("zh")
         print("embeddings loaded ...")
         
-        self.topk = 5
+        self.topk = 3
 
-        self.SERPER_KEY=re.sub("\n", "", open("serper_key").readline())
+        self.SERPER_KEY = re.sub("\n", "", open("serper_key").readline())
 
 
     def forward(self, data):
         json_data = data#request.json
         
         query = str(json_data["query"])
+        topk = None
+        if "topk" in json_data.keys():
+            topk = int(json_data["topk"])
         start_time = time.time()
         response = engine(query, SERPER_KEY=self.SERPER_KEY,
                           ft_en=self.ft_en, 
@@ -76,7 +79,7 @@ class Inference(Worker):
                           nlp_zh=self.nlp_zh,
                           measure_en=self.measure_en,
                           measure_zh=self.measure_zh,
-                          topk=self.topk
+                          topk=topk if topk else self.topk,
                           )
         print("engine cost: ", time.time() - start_time)
         return json.dumps(response)
@@ -89,7 +92,7 @@ class Inference(Worker):
 
 
 if __name__ == "__main__":
-    NUM_DEVICE = 12
+    NUM_DEVICE = 16
     server = Server()
     server.append_worker(Preprocess, num=NUM_DEVICE)
     server.append_worker(Inference, 
