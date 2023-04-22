@@ -1,7 +1,5 @@
 # MOSS_Retrieval
 
-##
 
-### CentOS
+MOSS 003 Web Search Tool service Deployment
 
-test
