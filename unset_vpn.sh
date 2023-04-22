@@ -1,1 +1,0 @@
-unset https_proxy http_proxy all_proxy
