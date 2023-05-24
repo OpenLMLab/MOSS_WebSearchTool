@@ -55,4 +55,4 @@ fi
 
 
 
-bash docker_run_retrieval.sh
+bash docker_run.sh
